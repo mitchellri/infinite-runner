@@ -3,7 +3,8 @@ love.graphics.setDefaultFilter("nearest","nearest")
 local ScreenManager = require("/lib/Yonder").ScreenManager
 
 function love.load()
-    ScreenManager:SwitchStates("game")
+	-- See for state keys: /lib/Yonder/ScreenManager.lua
+    ScreenManager:SwitchStates("main")
 end
 
 function love.update( dt )
