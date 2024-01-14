@@ -4,7 +4,7 @@ local ScreenManager = require("/lib/Yonder").ScreenManager
 
 function love.load()
 	-- See for state keys: /lib/Yonder/ScreenManager.lua
-    ScreenManager:SwitchStates("main")
+    ScreenManager:SwitchStates("game")
 end
 
 function love.update( dt )
