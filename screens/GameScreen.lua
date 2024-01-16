@@ -12,7 +12,8 @@ chr = require("/character")
 local screen = {}
 
 world = love.physics.newWorld( 0, 9.8, false )
-o = chr.new(world) --o is our object
+o = chr.Character.new(world) --o is our object //our rectangle
+floor = chr.Floor.new(world)
 function screen:Load(ScreenManager)
 	--	Initial graphics
 	love.graphics.setBackgroundColor(0,0,0,0)
@@ -35,7 +36,9 @@ end
 function screen:Draw()
 	-- STATE.draw()
 	-- chr.draw()
+	floor:draw()
 	o:draw() -- pass itself as hidden parameter 
+	
 end
 
 --	RESIZE	--
