@@ -1,5 +1,5 @@
 -- game = require "game"
-chr = require("/character")
+objects = require("objects")
 
 --scalewidth=love.graphics.getWidth()
 --scaleheight=love.graphics.getHeight()
@@ -12,8 +12,8 @@ chr = require("/character")
 local screen = {}
 
 world = love.physics.newWorld( 0, 9.8, false )
-o = chr.Character.new(world) --o is our object //our rectangle
-floor = chr.Floor.new(world)
+o = objects.Character.new(world) --o is our object //our rectangle
+floor = objects.Floor.new(world)
 function screen:Load(ScreenManager)
 	--	Initial graphics
 	love.graphics.setBackgroundColor(0,0,0,0)
@@ -21,7 +21,7 @@ function screen:Load(ScreenManager)
 	love.keyboard.setKeyRepeat(true)
 	-- STATE.load()
 	-- world = love.physics.newWorld( 0, 9.8, false )
-	-- o = chr.new(world) --o is our object
+	-- o = objects.new(world) --o is our object
 	-- o:draw() -- pass itself as hidden parameter 
 
 end
@@ -35,7 +35,7 @@ end
 
 function screen:Draw()
 	-- STATE.draw()
-	-- chr.draw()
+	-- objects.draw()
 	floor:draw()
 	o:draw() -- pass itself as hidden parameter 
 	
