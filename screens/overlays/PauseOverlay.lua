@@ -1,7 +1,8 @@
 local Suit = require('/lib/suit/')
 
 local overlay = {
-  isActive = false
+  isActive = false,
+  onClose = nil
 }
 
 local labelFont = love.graphics.newFont(24)
@@ -44,12 +45,14 @@ function overlay:update()
   end
 end
 
-function overlay:toggle()
-  self.isActive = not self.isActive
+function overlay:toggle(newActive)
+  if (newActive == true) or (newActive == false) then self.isActive = newActive
+  else self.isActive = not self.isActive end
+  if not self.isActive and (self.onClose ~= nil) then self.onClose() end
 end
 
 function overlay:quit()
-  self.isActive = false
+  self:toggle(false)
 end
 
 return overlay
