@@ -32,7 +32,7 @@ function Base.Rectangle:draw()
 	
 	-- Return the coordinate system back to its default settings
 	love.graphics.origin()
-	love.graphics.setColor(1, 1, 1)
+	love.graphics.setColor(1, 1, 1, 1)
 end
 
 --[[	OBJECTS	]]
