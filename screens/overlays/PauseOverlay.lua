@@ -1,7 +1,7 @@
 local Suit = require('/lib/suit/')
 
 local overlay = {
-  isActive = false,
+  isVisible = false,
   onClose = nil
 }
 
@@ -23,7 +23,7 @@ function overlay:draw()
 end
 
 function overlay:update()
-  if self.isActive then
+  if self.isVisible then
     Suit.layout:reset(centerX, centerY)
     Suit.layout:padding(paddingX, paddingY)
 
@@ -45,10 +45,12 @@ function overlay:update()
   end
 end
 
-function overlay:toggle(newActive)
-  if (newActive == true) or (newActive == false) then self.isActive = newActive
-  else self.isActive = not self.isActive end
-  if not self.isActive and (self.onClose ~= nil) then self.onClose() end
+function overlay:toggle(newVisible)
+  if (newVisible == true) or (newVisible == false) then self.isVisible = newVisible
+  else self.isVisible = not self.isVisible end
+
+  if not self.isVisible and (self.onClose ~= nil) then self.onClose()
+  elseif self.isVisible and (self.onOpen ~= nil) then self.onOpen() end
 end
 
 function overlay:quit()
