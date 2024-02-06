@@ -1,32 +1,36 @@
-local objects = require("objects")
-
 local screen = {}
+local game = require("screens.subscreens.GameScreenGame")
+local overlay = {
+	pause = require("screens.overlays.PauseOverlay")
+}
 
 local world = nil
 local character = nil
 local floor = nil
 
 function screen:Load(ScreenManager)
-	love.graphics.setBackgroundColor(0,0,0,0)
-	love.keyboard.setKeyRepeat(true)
-
-	world = love.physics.newWorld( 0, 9.8, false )
-	character = objects.Character.new(world, love.graphics.getWidth()/2, love.graphics.getHeight()/2)
-	floor = objects.Floor.new(world, 0, love.graphics.getHeight()-50/2, love.graphics.getWidth(), 50)
+	game:load(ScreenManager)
+	overlay.pause:load(ScreenManager)
 end
 
 function screen:Update( dt )
-	world:update(dt)
+	game:update(dt)
+	overlay.pause:update()
 end
 
 function screen:Draw()
-	floor:draw()
-	character:draw()
+	game:draw()
+	overlay.pause:draw()
+end
+
+function screen:KeyPressed(key)
+	if key == "escape" then
+		overlay.pause:toggle()
+	end
 end
 
 function screen:Quit()
-	love.event.quit()
+	overlay.pause:quit()
 end
 
 return screen
-
