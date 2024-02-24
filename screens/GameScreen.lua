@@ -18,6 +18,8 @@ end
 overlay.pause.onOpen = onPauseOpen
 overlay.pause.onClose = onPauseClose
 
+-- [[ Main Functions ]]
+
 function screen:Load(ScreenManager)
 	game:load(ScreenManager)
 	overlay.pause:load(ScreenManager)
@@ -37,9 +39,10 @@ function screen:Draw()
 end
 
 function screen:KeyPressed(key)
-	if key == "escape" then
-		overlay.pause:toggle()
+	if not overlay.pause.isVisible then
+		game:keypressed(key)
 	end
+	overlay.pause:keypressed(key)
 end
 
 function screen:Quit()
