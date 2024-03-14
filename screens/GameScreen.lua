@@ -36,10 +36,12 @@ function screen:Draw()
 	overlay.overlay:draw()
 end
 
+
 function screen:KeyPressed(key)
 	if key == "escape" then
 		overlay.pause:toggle()
 	end
+	game:keypressed(key)
 end
 
 function screen:Quit()
