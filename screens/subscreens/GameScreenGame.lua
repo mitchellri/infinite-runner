@@ -34,4 +34,8 @@ function screen:pause(newPaused)
 	self.isPaused = newPaused
 end
 
+
+function screen:keypressed( key )
+	character:keypressed( key )
+end
 return screen

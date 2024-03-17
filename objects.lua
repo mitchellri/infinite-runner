@@ -49,7 +49,7 @@ function Objects.Character.new(world, x, y)
 	local o = setmetatable({}, {__index = Base.Rectangle}) -- Create a new object - When an index isn't found in the object, look at Base.Rectangle
 	o.width = 30
 	o.height = 100
-
+	o.jumpSupportForce = 1200
 	o.body = love.physics.newBody( world, x, y, "dynamic")
 	--[[
 		The origin of rectangle is the center of the rectangle in this case
@@ -57,6 +57,19 @@ function Objects.Character.new(world, x, y)
 	]]
 	local shape = love.physics.newRectangleShape( o.width/2, o.height/2, o.width, o.height, 0 ) -- Shape is copied not referenced - can retrieve shape via fixture:getShape
 	o.fixture = love.physics.newFixture( o.body, shape, 1 )
+
+	function o:jump( )
+		o.body:applyLinearImpulse( 0, -o.jumpSupportForce )
+	end
+
+	function o:keypressed( key )
+		-- local dx = o.body:getX()
+		local dy = o.body:getY() --get the value of it's own body
+		if(key == "j") then  --key == "j" || key =="J"
+			-- dy = dy-130
+			o:jump ()
+		end
+	end
 
 	return o
 end

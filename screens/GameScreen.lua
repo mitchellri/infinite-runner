@@ -38,10 +38,12 @@ function screen:Draw()
 	overlay.overlay:draw()
 end
 
+
 function screen:KeyPressed(key)
 	if not overlay.pause.isVisible then
 		game:keypressed(key)
 	end
+
 	overlay.pause:keypressed(key)
 end
 
