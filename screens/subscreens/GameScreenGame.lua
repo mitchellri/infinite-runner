@@ -22,6 +22,7 @@ end
 function screen:update( dt )
 	if not self.isPaused then
 		world:update(dt)
+		character:update(dt)
 	end
 end
 
