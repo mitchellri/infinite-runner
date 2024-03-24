@@ -1,3 +1,4 @@
+local background = require("backGround")
 local objects = require("objects")
 
 local screen = {
@@ -23,9 +24,11 @@ function screen:update( dt )
 	if not self.isPaused then
 		world:update(dt)
 	end
+	background:update(dt)
 end
 
 function screen:draw()
+	background:draw()
 	floor:draw()
 	character:draw()
 end

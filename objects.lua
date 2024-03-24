@@ -6,6 +6,7 @@
 
 Base = {}
 
+
 Base.Object = { -- All objects must contain these attributes
 	color = {1, 1, 1, 1},
 	width = 0,
@@ -16,9 +17,16 @@ Base.Object = { -- All objects must contain these attributes
 }
 
 Base.Rectangle = setmetatable({}, {__index = Base.Object}) -- Assign a new table, and when an index is not found in Base.Rectangle look in Base.Object
+
+function Base.Rectangle.update(dt)
+	background_x = background_x + background_spd * dt
+	-- if background_y > love.graphics.getHeight() then
+    --     background_y = background_y - love.graphics.getHeight()
+    -- end
+end
+
 function Base.Rectangle:draw()
 	love.graphics.setColor(self.color)
-
 	-- Move the coordinate system origin (0, 0) to the location of the physical body
 	love.graphics.translate(self.body:getX(), self.body:getY())
 	-- Rotate the coordinate system (0, 0) by the rotation of the physical body
@@ -33,6 +41,7 @@ function Base.Rectangle:draw()
 	-- Return the coordinate system back to its default settings
 	love.graphics.origin()
 	love.graphics.setColor(1, 1, 1, 1)
+	
 end
 
 --[[	OBJECTS	]]
