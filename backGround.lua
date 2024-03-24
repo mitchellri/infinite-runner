@@ -43,12 +43,14 @@
 
 
 background = {
-    background_image = love.graphics.newImage("BG1.png"),  
+    background_image = love.graphics.newImage("images/background/BG1.png"),  
     background_speed = -100,
-    x = 0
+    x = 0,
+    a = -20
 }
 
 function background:update(dt)
+    self.background_speed = self.background_speed + dt*self.a
     self.x = self.x + dt*(self.background_speed)
     if math.abs(self.x) > self.background_image:getWidth() then
         self.x = 0
