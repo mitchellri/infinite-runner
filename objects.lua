@@ -41,7 +41,19 @@ function Base.Rectangle:draw()
 	-- Return the coordinate system back to its default settings
 	love.graphics.origin()
 	love.graphics.setColor(1, 1, 1, 1)
-	
+end
+
+Base.Obstacle = setmetatable({}, {__index = Base.Object}) -- Assign a new table, and when an index is not found in Base.Obstacle look in Base.Object
+Base.Obstacle.image = love.graphics.newImage("images/objects/rock.png")
+Base.Obstacle.width = 61
+Base.Obstacle.height = 75
+Base.Obstacle.speedForce = 1200
+Base.Obstacle.color = {0, 1, 0}
+function Base.Obstacle:update(dt)
+	self.body:applyForce(-self.speedForce, 0)
+end
+function Base.Obstacle:draw()
+	love.graphics.draw(self.image, self.body:getX(), self.body:getY(), self.body:getAngle())
 end
 
 --[[	OBJECTS	]]
@@ -53,6 +65,7 @@ end
 Objects = {}
 Objects.Character = {}
 Objects.Floor = {}
+Objects.Rock = {}
 
 function Objects.Character.new(world, x, y)
 	local o = setmetatable({}, {__index = Base.Rectangle}) -- Create a new object - When an index isn't found in the object, look at Base.Rectangle
@@ -98,6 +111,19 @@ function Objects.Floor.new(world, x, y, width, height)
 	local shape = love.physics.newRectangleShape( o.width/2, o.height/2, o.width, o.height, 0 )
 	o.fixture = love.physics.newFixture( o.body, shape, 1 ) -- Shape is copied not referenced
 	
+	return o
+end
+
+function Objects.Rock.new(world, x, y)
+	local o = setmetatable({}, {__index = Base.Obstacle}) -- Create a new object - When an index isn't found in the object, look at Base.Obstacle
+	
+	o.body = love.physics.newBody( world, x, y, "dynamic")
+	--[[
+		The origin of rectangle is the center of the rectangle in this case
+		Move the rectangle so the top left of the rectangle is at the origin of the body
+	]]
+	local shape = love.physics.newRectangleShape( o.width/2, o.height/2, o.width, o.height, 0 )
+	o.fixture = love.physics.newFixture( o.body, shape, 1 ) -- Shape is copied not referenced
 	return o
 end
 
