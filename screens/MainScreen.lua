@@ -15,9 +15,7 @@ function screen:Load(ScreenManager)
     self.ScreenManager = ScreenManager
 end
 
-function screen:Draw()
-  Suit.draw()
-end
+function screen:Draw() end
 
 function screen:Update()
   Suit.layout:reset(centerX, centerY)

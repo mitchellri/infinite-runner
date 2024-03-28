@@ -18,9 +18,7 @@ function overlay:load(ScreenManager)
   self.ScreenManager = ScreenManager
 end
 
-function overlay:draw()
-    Suit.draw() -- for some reason this needs to be called consistently or else it breaks
-end
+function overlay:draw() end
 
 function overlay:update()
   if self.isVisible then

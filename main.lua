@@ -1,6 +1,7 @@
 love.graphics.setDefaultFilter("nearest","nearest")
 
 local ScreenManager = require("/lib/Yonder").ScreenManager
+local Suit = require('/lib/suit/')
 
 function love.load()
 	-- See for state keys: /lib/Yonder/ScreenManager.lua
@@ -13,6 +14,7 @@ end
 
 function love.draw()
 	ScreenManager:Draw()
+	Suit.draw()
 end
 
 function love.keypressed( key, scancode, isrepeat )
