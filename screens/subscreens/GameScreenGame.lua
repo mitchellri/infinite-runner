@@ -25,8 +25,9 @@ end
 function screen:update( dt )
 	if not self.isPaused then
 		world:update(dt)
-		rock:update(dt)
 		background:update(dt)
+		objects.Speed = background.background_speed
+		rock:update(dt)
 	end
 end
 

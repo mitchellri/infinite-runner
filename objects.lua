@@ -18,13 +18,6 @@ Base.Object = { -- All objects must contain these attributes
 
 Base.Rectangle = setmetatable({}, {__index = Base.Object}) -- Assign a new table, and when an index is not found in Base.Rectangle look in Base.Object
 
-function Base.Rectangle.update(dt)
-	background_x = background_x + background_spd * dt
-	-- if background_y > love.graphics.getHeight() then
-    --     background_y = background_y - love.graphics.getHeight()
-    -- end
-end
-
 function Base.Rectangle:draw()
 	love.graphics.setColor(self.color)
 	-- Move the coordinate system origin (0, 0) to the location of the physical body
@@ -47,10 +40,9 @@ Base.Obstacle = setmetatable({}, {__index = Base.Object}) -- Assign a new table,
 Base.Obstacle.image = love.graphics.newImage("images/objects/rock.png")
 Base.Obstacle.width = 61
 Base.Obstacle.height = 75
-Base.Obstacle.speedForce = 1200
 Base.Obstacle.color = {0, 1, 0}
 function Base.Obstacle:update(dt)
-	self.body:applyForce(-self.speedForce, 0)
+	self.body:setLinearVelocity(Objects.Speed, 0) -- At this line of code, "Objects" has not been defined yet - but since it's in a function that gets called after it's defined, it will find the reference
 end
 function Base.Obstacle:draw()
 	love.graphics.draw(self.image, self.body:getX(), self.body:getY(), self.body:getAngle())
@@ -63,6 +55,7 @@ end
 ]]
 
 Objects = {}
+Objects.Speed = 0
 Objects.Character = {}
 Objects.Floor = {}
 Objects.Rock = {}
