@@ -45,6 +45,12 @@ function overlay:update()
   end
 end
 
+function overlay:keypressed(key)
+  if key == "escape" then
+    self:toggle()
+  end
+end
+
 function overlay:toggle(newVisible)
   if (newVisible == true) or (newVisible == false) then self.isVisible = newVisible
   else self.isVisible = not self.isVisible end

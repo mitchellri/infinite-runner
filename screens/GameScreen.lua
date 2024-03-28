@@ -38,9 +38,7 @@ end
 
 
 function screen:KeyPressed(key)
-	if key == "escape" then
-		overlay.pause:toggle()
-	end
+	overlay.pause:keypressed(key)
 	game:keypressed(key)
 end
 
