@@ -18,6 +18,12 @@ end
 overlay.pause.onOpen = onPauseOpen
 overlay.pause.onClose = onPauseClose
 
+local function onPlayerDeath()
+	overlay.pause:toggle(true)
+end
+
+game.onPlayerDeath = onPlayerDeath
+
 function screen:Load(ScreenManager)
 	game:load(ScreenManager)
 	overlay.pause:load(ScreenManager)

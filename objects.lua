@@ -1,3 +1,8 @@
+--[[	TYPE	]]
+Type = {
+	obstacle = 1
+}
+
 --[[	BASE	]]
 --[[
 	Initializes the minimum required attributes for common objects
@@ -6,14 +11,17 @@
 
 Base = {}
 
-
 Base.Object = { -- All objects must contain these attributes
 	color = {1, 1, 1, 1},
 	width = 0,
 	height = 0,
 	body = nil,
 	fixture = nil,
-	draw = function() end
+	draw = function() end,
+	beginContact = function(object, col) end,
+	endContact = function(object, col) end,
+	preSolve = function(object, col) end,
+	postSolve = function(object, col, normalImpulse, tangentImpulse) end
 }
 
 Base.Rectangle = setmetatable({}, {__index = Base.Object}) -- Assign a new table, and when an index is not found in Base.Rectangle look in Base.Object
@@ -72,6 +80,23 @@ function Objects.Character.new(world, x, y)
 	]]
 	local shape = love.physics.newRectangleShape( o.width/2, o.height/2, o.width, o.height, 0 ) -- Shape is copied not referenced - can retrieve shape via fixture:getShape
 	o.fixture = love.physics.newFixture( o.body, shape, 1 )
+	o.fixture:setUserData(o) -- Set the data that gets passed when a collision is detected (Required for collision detection)
+
+	o.onDeath = nil
+
+	function o:preSolve(object, col)
+		if object.fixture:getBody():getType() == "dynamic" then
+			if object.type == Type.obstacle then
+				self:die()
+			end
+		end
+	end
+
+	function o:die()
+		if self.onDeath ~= nil then
+			self:onDeath()
+		end
+	end
 
 	function o:jump( )
 		o.body:applyLinearImpulse( 0, -o.jumpSupportForce )
@@ -103,6 +128,7 @@ function Objects.Floor.new(world, x, y, width, height)
 	]]
 	local shape = love.physics.newRectangleShape( o.width/2, o.height/2, o.width, o.height, 0 )
 	o.fixture = love.physics.newFixture( o.body, shape, 1 ) -- Shape is copied not referenced
+	o.fixture:setUserData(o) -- Set the data that gets passed when a collision is detected (Required for collision detection)
 	
 	return o
 end
@@ -117,6 +143,10 @@ function Objects.Rock.new(world, x, y)
 	]]
 	local shape = love.physics.newRectangleShape( o.width/2, o.height/2, o.width, o.height, 0 )
 	o.fixture = love.physics.newFixture( o.body, shape, 1 ) -- Shape is copied not referenced
+	o.fixture:setUserData(o) -- Set the data that gets passed when a collision is detected (Required for collision detection)
+
+	o.type = Type.obstacle
+	
 	return o
 end
 
