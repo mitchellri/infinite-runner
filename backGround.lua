@@ -18,4 +18,8 @@ function background:draw()
 	love.graphics.draw(self.background_image, self.x + self.background_image:getWidth(), 0)
 end
 
+function background:load()
+    self.background_speed=-100
+end
+
 return background

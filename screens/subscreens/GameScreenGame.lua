@@ -56,6 +56,7 @@ function screen:load(ScreenManager)
 	character.onDeath = onPlayerDeath
 	floor = objects.Floor.new(world, 0, love.graphics.getHeight()-50/2, love.graphics.getWidth(), 50)
 	rock = objects.Rock.new(world, love.graphics.getWidth() - 75, floor.body:getY() - 61)
+	background:load()
 end
 
 function screen:update( dt )
