@@ -81,6 +81,8 @@ end
 
 
 function screen:keypressed( key )
-	character:keypressed( key )
+	if not self.isPaused then
+		character:keypressed( key )
+	end
 end
 return screen
