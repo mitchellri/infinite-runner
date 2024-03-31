@@ -14,7 +14,7 @@ function screen:load(ScreenManager)
 
 	self.isPaused = false
 
-	world = love.physics.newWorld( 0, 9.8 * love.physics.getMeter(), false )
+	world = love.physics.newWorld( 0, 9.8*4 * love.physics.getMeter(), false )
 	character = objects.Character.new(world, love.graphics.getWidth()/2, love.graphics.getHeight()/2)
 	floor = objects.Floor.new(world, 0, love.graphics.getHeight()-50/2, love.graphics.getWidth(), 50)
 end

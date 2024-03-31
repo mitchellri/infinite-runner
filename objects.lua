@@ -52,7 +52,7 @@ function Objects.Character.new(world, x, y)
 	o.scale = 5
 	o.width = 21 * o.scale
 	o.height = 16 * o.scale
-	o.jumpSupportForce = 1200
+	o.jumpVelocity = 1200/2
 	o.body = love.physics.newBody( world, x, y, "dynamic")
 	o.animation = {}
 	o.animation.walk = newAnimation(love.graphics.newImage("images/Player/walk.png"), 21, 16, 0.1, 8)
@@ -65,15 +65,12 @@ function Objects.Character.new(world, x, y)
 	o.fixture = love.physics.newFixture( o.body, shape, 1 )
 
 	function o:jump( )
-		o.body:applyLinearImpulse( 0, -o.jumpSupportForce )
+		o.body:setLinearVelocity( 0, -o.jumpVelocity )
 	end
 
 	function o:keypressed( key )
-		-- local dx = o.body:getX()
-		local dy = o.body:getY() --get the value of it's own body
-		if(key == "j") then  --key == "j" || key =="J"
-			-- dy = dy-130
-			o:jump ()
+		if(key == "j") then 
+			o:jump()
 		end
 	end
 
