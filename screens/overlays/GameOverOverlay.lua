@@ -1,8 +1,7 @@
 local Suit = require('/lib/suit/')
 
 local overlay = {
-  isVisible = false,
-  onClose = nil
+  isVisible = false
 }
 
 local labelFont = love.graphics.newFont(24)
@@ -25,13 +24,9 @@ function overlay:update()
     Suit.layout:reset(centerX, centerY)
     Suit.layout:padding(paddingX, paddingY)
 
-    Suit.Label("Pause", {font=labelFont}, Suit.layout:row(rWidth, rHeight))
+    Suit.Label("Game Over", {font=labelFont}, Suit.layout:row(rWidth, rHeight))
 
-    if Suit.Button("Resume", Suit.layout:row()).hit then
-      self:quit()
-    end
-    
-    if Suit.Button("Reset", Suit.layout:row()).hit then
+    if Suit.Button("Retry", Suit.layout:row()).hit then
       self.ScreenManager:SwitchStates("game")
       self:quit()
     end
@@ -43,22 +38,10 @@ function overlay:update()
   end
 end
 
-function overlay:keypressed(key)
-  if key == "escape" then
-    self:toggle()
-  end
-end
-
-function overlay:toggle(newVisible)
-  if (newVisible == true) or (newVisible == false) then self.isVisible = newVisible
-  else self.isVisible = not self.isVisible end
-
-  if not self.isVisible and (self.onClose ~= nil) then self.onClose()
-  elseif self.isVisible and (self.onOpen ~= nil) then self.onOpen() end
-end
+function overlay:keypressed(key) end
 
 function overlay:quit()
-  self:toggle(false)
+  self.isVisible = false
 end
 
 return overlay
