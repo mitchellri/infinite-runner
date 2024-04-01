@@ -1,3 +1,5 @@
+require('/lib/AnAL')
+
 --[[	TYPE	]]
 Type = {
 	obstacle = 1
@@ -69,11 +71,15 @@ Objects.Floor = {}
 Objects.Rock = {}
 
 function Objects.Character.new(world, x, y)
-	local o = setmetatable({}, {__index = Base.Rectangle}) -- Create a new object - When an index isn't found in the object, look at Base.Rectangle
-	o.width = 30
-	o.height = 100
-	o.jumpSupportForce = 1200
+	local o = setmetatable({}, {__index = Base.Object}) -- Create a new object - When an index isn't found in the object, look at Base.Object
+	o.scale = 5
+	o.width = 21 * o.scale
+	o.height = 16 * o.scale
+	o.jumpVelocity = 1200/2
 	o.body = love.physics.newBody( world, x, y, "dynamic")
+	o.animation = {}
+	o.animation.walk = newAnimation(love.graphics.newImage("images/Player/walk.png"), 21, 16, 0.1, 8)
+	o.animation.current = o.animation.walk
 	--[[
 		The origin of rectangle is the center of the rectangle in this case
 		Move the rectangle so the top left of the rectangle is at the origin of the body
@@ -99,16 +105,21 @@ function Objects.Character.new(world, x, y)
 	end
 
 	function o:jump( )
-		o.body:applyLinearImpulse( 0, -o.jumpSupportForce )
+		o.body:setLinearVelocity( 0, -o.jumpVelocity )
 	end
 
 	function o:keypressed( key )
-		-- local dx = o.body:getX()
-		local dy = o.body:getY() --get the value of it's own body
-		if(key == "j") then  --key == "j" || key =="J"
-			-- dy = dy-130
-			o:jump ()
+		if(key == "j") then 
+			o:jump()
 		end
+	end
+
+	function o:update(dt)
+		self.animation.current:update(dt)
+	end
+
+	function o:draw()
+		self.animation.current:draw(self.body:getX(), self.body:getY(), self.body:getAngle(), self.scale)
 	end
 
 	return o

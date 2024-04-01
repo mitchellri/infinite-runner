@@ -50,7 +50,7 @@ function screen:load(ScreenManager)
 
 	self.isPaused = false
 
-	world = love.physics.newWorld( 0, 9.8 * love.physics.getMeter(), false )
+	world = love.physics.newWorld( 0, 9.8*4 * love.physics.getMeter(), false )
 	world:setCallbacks(beginContact, endContact, preSolve, postSolve)
 	character = objects.Character.new(world, love.graphics.getWidth()/2, love.graphics.getHeight()/2)
 	character.onDeath = onPlayerDeath
@@ -62,6 +62,7 @@ end
 function screen:update( dt )
 	if not self.isPaused then
 		world:update(dt)
+		character:update(dt)
 		background:update(dt)
 		objects.Speed = background.background_speed
 		rock:update(dt)
@@ -81,8 +82,6 @@ end
 
 
 function screen:keypressed( key )
-	if not self.isPaused then
-		character:keypressed( key )
-	end
+	character:keypressed( key )
 end
 return screen

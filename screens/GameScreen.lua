@@ -51,7 +51,9 @@ function screen:KeyPressed(key)
 	if not overlay.gameOver.isVisible then
 		overlay.pause:keypressed(key)
 	end
-	game:keypressed(key)
+	if (not overlay.pause.isVisible) and (not overlay.gameOver.isVisible) then
+		game:keypressed(key)
+	end
 end
 
 function screen:Quit()
