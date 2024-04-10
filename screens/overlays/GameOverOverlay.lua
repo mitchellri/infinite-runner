@@ -15,6 +15,7 @@ local centerY = (love.graphics.getHeight() - rHeight - paddingY) / 2
 
 function overlay:load(ScreenManager)
   self.ScreenManager = ScreenManager
+  self.isVisible = false
 end
 
 function overlay:draw() end

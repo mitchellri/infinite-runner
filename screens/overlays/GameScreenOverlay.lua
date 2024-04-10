@@ -5,6 +5,8 @@ local overlay = {
 }
 
 function overlay:load()
+  self.isVisible = true
+  self.isActive = true
   self.time = 0
 end
 
