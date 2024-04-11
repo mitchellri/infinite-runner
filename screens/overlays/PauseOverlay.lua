@@ -3,7 +3,8 @@ local Suit = require('/lib/suit/')
 local overlay = {
   isVisible = false,
   onClose = nil,
-  onQuit = nil
+  onQuit = nil,
+  onSettings = nil
 }
 
 local sound = {
@@ -44,6 +45,16 @@ function overlay:update()
       sound.menu.select:stop()
       sound.menu.select:play()
       self:quit()
+    end
+    
+    state = Suit.Button("Settings", Suit.layout:row())
+    if state.entered then
+      sound.menu.highlight:stop()
+      sound.menu.highlight:play()
+    elseif state.hit then
+      sound.menu.select:stop()
+      sound.menu.select:play()
+      if self.onSettings ~= nil then self.onSettings() end
     end
     
     state = Suit.Button("Reset", Suit.layout:row())
