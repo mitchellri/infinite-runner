@@ -93,8 +93,13 @@ Objects.Rock = {}
 
 function Objects.Character.new(world, x, y)
 	local o = setmetatable({}, {__index = Base.Object}) -- Create a new object - When an index isn't found in the object, look at Base.Object
-	o.animation = {}
-	o.animation.walk = newAnimation(love.graphics.newImage("images/Player/walk.png"), 21, 16, 0.1, 8)
+	o.animation = {
+		walk = newAnimation(love.graphics.newImage("images/Player/walk.png"), 21, 16, 0.1, 8),
+		jump = newAnimation(love.graphics.newImage("images/Player/jump.png"), 22, 18, 0.05, 4),
+		land = newAnimation(love.graphics.newImage("images/Player/land.png"), 22, 18, 0.04, 6)
+	}
+	o.animation.jump:setMode("once")
+	o.animation.land:setMode("once")
 	o.animation.current = o.animation.walk
 
 	o.sound = {
@@ -121,6 +126,19 @@ function Objects.Character.new(world, x, y)
 			if object.type == Type.obstacle then
 				self:die()
 			end
+		else
+			vx, vy = self.body:getLinearVelocity()
+			if (self.animation.current == self.animation.jump) and vy > 0 then
+				self.animation.jump:reset()
+				self.animation.jump:stop()
+				self.animation.land:play()
+				self.animation.current = self.animation.land
+			elseif (self.animation.current == self.animation.land) and not self.animation.current.playing then
+				self.animation.land:reset()
+				self.animation.land:stop()
+				self.animation.walk:play()
+				self.animation.current = self.animation.walk
+			end
 		end
 	end
 
@@ -132,12 +150,15 @@ function Objects.Character.new(world, x, y)
 
 	function o:jump( )
 		self.body:setLinearVelocity( 0, -o.jumpVelocity )
+		self.animation.walk:stop()
+		self.animation.jump:play()
+		self.animation.current = self.animation.jump
 		self.sound.jump:stop()
 		self.sound.jump:play()
 	end
 
 	function o:keypressed( key )
-		if(key == "j") then 
+		if(key == "j") then
 			o:jump()
 		end
 	end
