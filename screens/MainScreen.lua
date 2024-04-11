@@ -11,6 +11,7 @@ local sound = {
 		select = love.audio.newSource("/sound/menu/Rise02.mp3", "static")
 	}
 }
+sound.music:setLooping(true)
 
 local rWidth = 200
 local rHeight = 30

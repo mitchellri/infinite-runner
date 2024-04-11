@@ -8,6 +8,7 @@ local overlay = { -- Overlays only using Suit do not need to have draw() called
 local sound = {
 	music = love.audio.newSource("/sound/music/happy.mp3", "stream")
 }
+sound.music:setLooping(true)
 
 local function onPauseOpen()
 	game:pause(true)
