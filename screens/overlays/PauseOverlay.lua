@@ -2,7 +2,16 @@ local Suit = require('/lib/suit/')
 
 local overlay = {
   isVisible = false,
-  onClose = nil
+  onClose = nil,
+  onQuit = nil
+}
+
+local sound = {
+  menu = {
+		highlight = love.audio.newSource("/sound/menu/Rise01.mp3", "static"),
+		toggle = love.audio.newSource("/sound/menu/Rise03.mp3", "static"),
+		select = love.audio.newSource("/sound/menu/Rise02.mp3", "static")
+	}
 }
 
 local labelFont = love.graphics.newFont(24)
@@ -27,16 +36,35 @@ function overlay:update()
 
     Suit.Label("Pause", {font=labelFont}, Suit.layout:row(rWidth, rHeight))
 
-    if Suit.Button("Resume", Suit.layout:row()).hit then
+    local state = Suit.Button("Resume", Suit.layout:row())
+    if state.entered then
+      sound.menu.highlight:stop()
+      sound.menu.highlight:play()
+    elseif state.hit then
+      sound.menu.select:stop()
+      sound.menu.select:play()
       self:quit()
     end
     
-    if Suit.Button("Reset", Suit.layout:row()).hit then
+    state = Suit.Button("Reset", Suit.layout:row())
+    if state.entered then
+      sound.menu.highlight:stop()
+      sound.menu.highlight:play()
+    elseif state.hit then
+      sound.menu.select:stop()
+      sound.menu.select:play()
       self.ScreenManager:SwitchStates("game")
       self:quit()
     end
 
-    if Suit.Button("Quit", Suit.layout:row()).hit then
+    state = Suit.Button("Quit", Suit.layout:row())
+    if state.entered then
+      sound.menu.highlight:stop()
+      sound.menu.highlight:play()
+    elseif state.hit then
+      sound.menu.select:stop()
+      sound.menu.select:play()
+      if self.onQuit ~= nil then self.onQuit() end
       self.ScreenManager:SwitchStates("main")
       self:quit()
     end
@@ -45,6 +73,8 @@ end
 
 function overlay:keypressed(key)
   if key == "escape" then
+    sound.menu.toggle:stop()
+    sound.menu.toggle:play()
     self:toggle()
   end
 end

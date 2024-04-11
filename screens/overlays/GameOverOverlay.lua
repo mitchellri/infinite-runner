@@ -1,7 +1,15 @@
 local Suit = require('/lib/suit/')
 
 local overlay = {
-  isVisible = false
+  isVisible = false,
+  onQuit = nil
+}
+
+local sound = {
+	menu = {
+		highlight = love.audio.newSource("/sound/menu/Rise01.mp3", "static"),
+		select = love.audio.newSource("/sound/menu/Rise02.mp3", "static")
+	}
 }
 
 local labelFont = love.graphics.newFont(24)
@@ -27,12 +35,25 @@ function overlay:update()
 
     Suit.Label("Game Over", {font=labelFont}, Suit.layout:row(rWidth, rHeight))
 
-    if Suit.Button("Retry", Suit.layout:row()).hit then
+    local state = Suit.Button("Retry", Suit.layout:row())
+    if state.entered then
+      sound.menu.highlight:stop()
+      sound.menu.highlight:play()
+    elseif state.hit then
+      sound.menu.select:stop()
+      sound.menu.select:play()
       self.ScreenManager:SwitchStates("game")
       self:quit()
     end
 
-    if Suit.Button("Quit", Suit.layout:row()).hit then
+    state = Suit.Button("Quit", Suit.layout:row())
+    if state.entered then
+      sound.menu.highlight:stop()
+      sound.menu.highlight:play()
+    elseif state.hit then
+      sound.menu.select:stop()
+      sound.menu.select:play()
+      if self.onQuit ~= nil then self.onQuit() end
       self.ScreenManager:SwitchStates("main")
       self:quit()
     end

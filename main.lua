@@ -6,6 +6,7 @@ local Suit = require('/lib/suit/')
 function love.load()
 	-- See for state keys: /lib/Yonder/ScreenManager.lua
     ScreenManager:SwitchStates("game")
+	love.audio.setVolume(0.1)
 end
 
 function love.update( dt )

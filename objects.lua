@@ -96,6 +96,11 @@ function Objects.Character.new(world, x, y)
 	o.animation = {}
 	o.animation.walk = newAnimation(love.graphics.newImage("images/Player/walk.png"), 21, 16, 0.1, 8)
 	o.animation.current = o.animation.walk
+
+	o.sound = {
+		jump = love.audio.newSource("/sound/game/sfx_movement_jump14.wav", "static"),
+	}
+
 	o.scale = 5
 	o.radius = math.min(o.animation.current:getWidth() * o.scale, o.animation.current:getHeight() * o.scale) / 2 * bodyScale
 	o.jumpVelocity = 1200/2
@@ -126,7 +131,9 @@ function Objects.Character.new(world, x, y)
 	end
 
 	function o:jump( )
-		o.body:setLinearVelocity( 0, -o.jumpVelocity )
+		self.body:setLinearVelocity( 0, -o.jumpVelocity )
+		self.sound.jump:stop()
+		self.sound.jump:play()
 	end
 
 	function o:keypressed( key )
