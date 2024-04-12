@@ -27,12 +27,19 @@ local previousSettings = {
     volume = 0
 }
 
+local function saveNewSettings()
+    previousSettings.volume = love.audio.getVolume()
+end
+
 local function restorePreviousSettings()
+    slider.value = previousSettings.volume * 100
     love.audio.setVolume(previousSettings.volume)
 end
 
 function screen:load(ScreenManager)
     self.ScreenManager = ScreenManager
+    self.isVisible = false
+    self.onExitSettings = nil
 
     previousSettings.volume = love.audio.getVolume()
 
@@ -64,6 +71,7 @@ function screen:update()
         elseif state.hit then
             sound.menu.select:stop()
             sound.menu.select:play()
+            saveNewSettings()
             if self.onExitSettings ~= nil then self.onExitSettings() end
         end
 

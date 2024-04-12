@@ -24,6 +24,9 @@ local centerY = (love.graphics.getHeight() - rHeight - paddingY) / 2
 
 function screen:load(ScreenManager)
     self.ScreenManager = ScreenManager
+    self.isVisible = true
+    self.onExitMainScreen = nil
+    self.onSettings = nil
 end
 
 function screen:update()

@@ -11,7 +11,6 @@ local overlay = { -- Overlays only using Suit do not need to have draw() called
 local sound = {
 	music = love.audio.newSource("/sound/music/happy.mp3", "stream")
 }
-sound.music:setLooping(true)
 
 local function onPauseOpen()
 	subscreens.game:pause(true)
@@ -28,7 +27,6 @@ local function onQuit()
 end
 
 local function onSettings()
-	subscreens.settings:load(screen.screenManager)
 	subscreens.settings.isVisible = true
 	overlay.pause.isVisible = false
 end
@@ -38,29 +36,28 @@ local function onExitSettings()
 	overlay.pause.isVisible = true
 end
 
-overlay.pause.onOpen = onPauseOpen
-overlay.pause.onClose = onPauseClose
-overlay.pause.onQuit = onQuit
-overlay.pause.onSettings = onSettings
-overlay.gameOver.onQuit = onQuit
-subscreens.settings.onExitSettings = onExitSettings
-
 local function onPlayerDeath()
 	subscreens.game:pause(true)
 	overlay.overlay.isActive = false
 	overlay.gameOver.isVisible = true
 end
 
-subscreens.game.onPlayerDeath = onPlayerDeath
-
 function screen:Load(ScreenManager)
 	self.ScreenManager = ScreenManager
 	subscreens.game:load(ScreenManager)
+	subscreens.game.onPlayerDeath = onPlayerDeath
 	subscreens.settings:load(ScreenManager)
+	subscreens.settings.onExitSettings = onExitSettings
 	overlay.pause:load(ScreenManager)
+	overlay.pause.onOpen = onPauseOpen
+	overlay.pause.onClose = onPauseClose
+	overlay.pause.onQuit = onQuit
+	overlay.pause.onSettings = onSettings
 	overlay.gameOver:load(ScreenManager)
+	overlay.gameOver.onQuit = onQuit
 	overlay.overlay:load()
 	sound.music:play()
+	sound.music:setLooping(true)
 end
 
 function screen:Update( dt )

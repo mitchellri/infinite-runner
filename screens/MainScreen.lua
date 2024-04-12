@@ -7,14 +7,12 @@ local subscreens = {
 local sound = {
 	music = love.audio.newSource("/sound/music/intro_theme.mp3", "stream")
 }
-sound.music:setLooping(true)
 
 local function onExitMainScreen()
   sound.music:stop()
 end
 
 local function onSettings()
-  subscreens.settings:load(screenManager)
   subscreens.settings.isVisible = true
   subscreens.menu.isVisible = false
 end
@@ -24,13 +22,13 @@ local function onExitSettings()
   subscreens.menu.isVisible = true
 end
 
-subscreens.menu.onExitMainScreen = onExitMainScreen
-subscreens.menu.onSettings = onSettings
-subscreens.settings.onExitSettings = onExitSettings
-
 function screen:Load(ScreenManager)
 	subscreens.menu:load(ScreenManager)
+  subscreens.menu.onExitMainScreen = onExitMainScreen
+  subscreens.menu.onSettings = onSettings
   subscreens.settings:load(ScreenManager)
+  subscreens.settings.onExitSettings = onExitSettings
+  sound.music:setLooping(true)
 	sound.music:play()
 end
 

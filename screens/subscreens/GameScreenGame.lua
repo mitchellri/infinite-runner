@@ -49,6 +49,7 @@ function screen:load(ScreenManager)
 	love.keyboard.setKeyRepeat(true)
 
 	self.isPaused = false
+	self.onPlayerDeath = nil
 
 	world = love.physics.newWorld( 0, 9.8*4 * love.physics.getMeter(), false )
 	world:setCallbacks(beginContact, endContact, preSolve, postSolve)
