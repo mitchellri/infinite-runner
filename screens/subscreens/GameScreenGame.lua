@@ -1,6 +1,7 @@
 local background = require("backGround")
 local objects = require("objects")
 
+
 local screen = {
 	isPaused = false,
 	onPlayerDeath = nil
@@ -10,6 +11,7 @@ local world = nil
 local character = nil
 local floor = nil
 local rock = nil
+local reward = nil
 
 --[[ Collision ]]
 local function beginContact(a, b, col)
@@ -58,6 +60,7 @@ function screen:load(ScreenManager)
 	floor = objects.Floor.new(world, 0, love.graphics.getHeight()-50/2, love.graphics.getWidth(), 50)
 	rock = objects.Rock.new(world, love.graphics.getWidth() - 75, floor.body:getY() - 61)
 	background:load()
+	reward = Objects.Social.new(world, love.graphics.getWidth()-30, floor.body:getY() - 90)
 end
 
 function screen:update( dt )
@@ -67,6 +70,7 @@ function screen:update( dt )
 		background:update(dt)
 		objects.Speed = background.background_speed
 		rock:update(dt)
+		reward:update(dt)
 	end
 end
 
@@ -75,6 +79,7 @@ function screen:draw()
 	floor:draw()
 	rock:draw()
 	character:draw()
+	reward:draw()
 end
 
 function screen:pause(newPaused)
@@ -85,4 +90,6 @@ end
 function screen:keypressed( key )
 	character:keypressed( key )
 end
+
+
 return screen

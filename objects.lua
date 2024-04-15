@@ -79,6 +79,20 @@ function Base.Obstacle:draw()
 	love.graphics.draw(self.image, self.body:getX() - self.radius + (self.radius*2 - self.image:getWidth()) / 2, self.body:getY() - self.radius + (self.radius*2 - self.image:getHeight()) / 2, self.body:getAngle())
 end
 
+--Reward base
+Base.Reward = setmetatable({}, {__index = Base.Circle}) -- Assign a new table, and when an index is not found in Base.Obstacle look in Base.Object
+Base.Reward.image = love.graphics.newImage("images/objects/nuomi.jpg")
+Base.Reward.radius = math.min(Base.Reward.image:getHeight(), Base.Reward.image:getWidth()) / 2 * bodyScale
+function Base.Reward:update(dt)
+	local vx, vy = self.body:getLinearVelocity()
+	self.body:setLinearVelocity(Objects.Speed, vy)
+end
+
+function Base.Reward:draw()
+	love.graphics.draw(self.image, self.body:getX() - self.radius + (self.radius*2 - self.image:getWidth()) / 2, self.body:getY() - self.radius + (self.radius*2 - self.image:getHeight()) / 2, self.body:getAngle())
+end
+
+
 --[[	OBJECTS	]]
 --[[
 	Objects to be used in the game
@@ -90,6 +104,7 @@ Objects.Speed = 0
 Objects.Character = {}
 Objects.Floor = {}
 Objects.Rock = {}
+Objects.Social = {}
 
 function Objects.Character.new(world, x, y)
 	local o = setmetatable({}, {__index = Base.Object}) -- Create a new object - When an index isn't found in the object, look at Base.Object
@@ -215,5 +230,15 @@ function Objects.Rock.new(world, x, y)
 	
 	return o
 end
+
+function Objects.Social.new(world,x,y)
+	local o = setmetatable({},{__index = Base.Reward})
+	o.body = love.physics.newBody(world,x,y,"dynamic")
+	o.body:setFixedRotation( true)
+	local shape = love.physics.newCircleShape( 0, 0, o.radius )
+	o.fixture = love.physics.newFixture( o.body, shape, 1 )
+	o.fixture:setUserData(o)
+	return o
+end 
 
 return Objects
