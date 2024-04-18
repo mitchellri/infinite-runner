@@ -3,7 +3,6 @@ local Yonder = require("lib.Yonder.exampleScreen")
 local screen = setmetatable({}, {__index=Yonder})
 local views = {
 	game = require("screens.views.GameView"),
-	settings = require("screens.views.SettingsView"),
 	pause = require("screens.views.PauseView"),
 	overlay = require("screens.views.GameOverlayView"),
 	gameOver = require("screens.views.GameOverView")
@@ -28,16 +27,6 @@ local function onQuit()
 	sound.music:stop()
 end
 
-local function onSettings()
-	views.settings.isVisible = true
-	views.pause.isVisible = false
-end
-
-local function onExitSettings()
-	views.settings.isVisible = false
-	views.pause.isVisible = true
-end
-
 local function onPlayerDeath()
 	views.game:pause(true)
 	views.overlay.isActive = false
@@ -50,8 +39,6 @@ function screen:Load(ScreenManager)
 	self.ScreenManager = ScreenManager
 	views.game:Load(ScreenManager)
 	views.game.onPlayerDeath = onPlayerDeath
-	views.settings:Load(ScreenManager)
-	views.settings.onExitSettings = onExitSettings
 	views.pause:Load(ScreenManager)
 	views.pause.onOpen = onPauseOpen
 	views.pause.onClose = onPauseClose
@@ -66,7 +53,6 @@ end
 
 function screen:Update( dt )
 	views.game:Update(dt)
-	views.settings:Update(dt)
 	views.pause:Update()
 	views.gameOver:Update()
 	views.overlay:Update(dt)
@@ -78,10 +64,10 @@ function screen:Draw()
 end
 
 function screen:KeyPressed(key)
-	if (not views.gameOver.isVisible) and (not views.settings.isVisible) then
+	if not views.gameOver.isVisible then
 		views.pause:KeyPressed(key)
 	end
-	if (not views.pause.isVisible) and (not views.gameOver.isVisible) and (not views.settings.isVisible) then
+	if (not views.pause.isVisible) and (not views.gameOver.isVisible) then
 		views.game:KeyPressed(key)
 	end
 end

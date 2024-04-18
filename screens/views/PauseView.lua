@@ -3,10 +3,14 @@ local Yonder = require("lib.Yonder.exampleScreen")
 
 local view = setmetatable({
   isVisible = false,
+  currentView = nil,
   onClose = nil,
-  onQuit = nil,
-  onSettings = nil
+  onQuit = nil
 }, {__index=Yonder})
+
+local views = {
+  settings = require("screens.views.SettingsView")
+}
 
 local sound = {
   menu = {
@@ -24,64 +28,82 @@ local centerX = (love.graphics.getWidth() - rWidth - paddingX) / 2
 local centerY = (love.graphics.getHeight() - rHeight - paddingY) / 2
 local labelFont = love.graphics.newFont(24)
 
+--[[	LOCAL FUNCTIONS	]]
+
+local function onSettings()
+	view.currentView = "settings"
+  views.settings.isVisible = true
+end
+
+local function onExitSettings()
+	view.currentView = nil
+  views.settings.isVisible = true
+end
+
 --[[	MAIN FUNCTIONS	]]
 
 function view:Load(ScreenManager)
   self.ScreenManager = ScreenManager
+  views.settings:Load(ScreenManager)
+  views.settings.onExitSettings = onExitSettings
   self.isVisible = false
+  self.currentView = nil
   self.onClose = nil
   self.onQuit = nil
-  self.onSettings = nil
 end
 
 function view:Update()
   if self.isVisible then
-    Suit.layout:reset(centerX, centerY)
-    Suit.layout:padding(paddingX, paddingY)
+    if self.currentView == nil then
+      Suit.layout:reset(centerX, centerY)
+      Suit.layout:padding(paddingX, paddingY)
 
-    Suit.Label("Pause", {font=labelFont}, Suit.layout:row(rWidth, rHeight))
+      Suit.Label("Pause", {font=labelFont}, Suit.layout:row(rWidth, rHeight))
 
-    local state = Suit.Button("Resume", Suit.layout:row())
-    if state.entered then
-      sound.menu.highlight:stop()
-      sound.menu.highlight:play()
-    elseif state.hit then
-      sound.menu.select:stop()
-      sound.menu.select:play()
-      self:quit()
-    end
-    
-    state = Suit.Button("Settings", Suit.layout:row())
-    if state.entered then
-      sound.menu.highlight:stop()
-      sound.menu.highlight:play()
-    elseif state.hit then
-      sound.menu.select:stop()
-      sound.menu.select:play()
-      if self.onSettings ~= nil then self.onSettings() end
-    end
-    
-    state = Suit.Button("Reset", Suit.layout:row())
-    if state.entered then
-      sound.menu.highlight:stop()
-      sound.menu.highlight:play()
-    elseif state.hit then
-      sound.menu.select:stop()
-      sound.menu.select:play()
-      self.ScreenManager:SwitchStates("game")
-      self:quit()
-    end
+      local state = Suit.Button("Resume", Suit.layout:row())
+      if state.entered then
+        sound.menu.highlight:stop()
+        sound.menu.highlight:play()
+      elseif state.hit then
+        sound.menu.select:stop()
+        sound.menu.select:play()
+        self:quit()
+      end
+      
+      state = Suit.Button("Settings", Suit.layout:row())
+      if state.entered then
+        sound.menu.highlight:stop()
+        sound.menu.highlight:play()
+      elseif state.hit then
+        sound.menu.select:stop()
+        sound.menu.select:play()
+        onSettings()
+      end
+      
+      state = Suit.Button("Reset", Suit.layout:row())
+      if state.entered then
+        sound.menu.highlight:stop()
+        sound.menu.highlight:play()
+      elseif state.hit then
+        sound.menu.select:stop()
+        sound.menu.select:play()
+        self.ScreenManager:SwitchStates("game")
+        self:quit()
+      end
 
-    state = Suit.Button("Quit", Suit.layout:row())
-    if state.entered then
-      sound.menu.highlight:stop()
-      sound.menu.highlight:play()
-    elseif state.hit then
-      sound.menu.select:stop()
-      sound.menu.select:play()
-      if self.onQuit ~= nil then self.onQuit() end
-      self.ScreenManager:SwitchStates("main")
-      self:quit()
+      state = Suit.Button("Quit", Suit.layout:row())
+      if state.entered then
+        sound.menu.highlight:stop()
+        sound.menu.highlight:play()
+      elseif state.hit then
+        sound.menu.select:stop()
+        sound.menu.select:play()
+        if self.onQuit ~= nil then self.onQuit() end
+        self.ScreenManager:SwitchStates("main")
+        self:quit()
+      end
+    else
+      views[self.currentView]:Update()
     end
   end
 end
