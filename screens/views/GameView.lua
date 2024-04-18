@@ -2,7 +2,7 @@ local background = require("backGround")
 local objects = require("objects")
 
 
-local screen = {
+local view = {
 	isPaused = false,
 	onPlayerDeath = nil
 }
@@ -41,12 +41,12 @@ end
 --[[ /Collision ]]
 
 local function onPlayerDeath()
-	if screen.onPlayerDeath ~= nil then
-		screen:onPlayerDeath()
+	if view.onPlayerDeath ~= nil then
+		view:onPlayerDeath()
 	end
 end
 
-function screen:load(ScreenManager)
+function view:load(ScreenManager)
 	love.graphics.setBackgroundColor(0,0,0,0)
 	love.keyboard.setKeyRepeat(true)
 
@@ -63,7 +63,7 @@ function screen:load(ScreenManager)
 	reward = Objects.Social.new(world, love.graphics.getWidth()-30, floor.body:getY() - 90)
 end
 
-function screen:update( dt )
+function view:update( dt )
 	if not self.isPaused then
 		world:update(dt)
 		character:update(dt)
@@ -74,7 +74,7 @@ function screen:update( dt )
 	end
 end
 
-function screen:draw()
+function view:draw()
 	background:draw()
 	floor:draw()
 	rock:draw()
@@ -82,14 +82,14 @@ function screen:draw()
 	reward:draw()
 end
 
-function screen:pause(newPaused)
+function view:pause(newPaused)
 	self.isPaused = newPaused
 end
 
 
-function screen:keypressed( key )
+function view:keypressed( key )
 	character:keypressed( key )
 end
 
 
-return screen
+return view

@@ -1,6 +1,6 @@
 local Suit = require('/lib/suit/')
 
-local overlay = {
+local view = {
   isVisible = false,
   onClose = nil,
   onQuit = nil,
@@ -24,7 +24,7 @@ local paddingY = 10
 local centerX = (love.graphics.getWidth() - rWidth - paddingX) / 2
 local centerY = (love.graphics.getHeight() - rHeight - paddingY) / 2
 
-function overlay:load(ScreenManager)
+function view:load(ScreenManager)
   self.ScreenManager = ScreenManager
   self.isVisible = false
   self.onClose = nil
@@ -32,9 +32,9 @@ function overlay:load(ScreenManager)
   self.onSettings = nil
 end
 
-function overlay:draw() end
+function view:draw() end
 
-function overlay:update()
+function view:update()
   if self.isVisible then
     Suit.layout:reset(centerX, centerY)
     Suit.layout:padding(paddingX, paddingY)
@@ -86,7 +86,7 @@ function overlay:update()
   end
 end
 
-function overlay:keypressed(key)
+function view:keypressed(key)
   if key == "escape" then
     sound.menu.toggle:stop()
     sound.menu.toggle:play()
@@ -94,7 +94,7 @@ function overlay:keypressed(key)
   end
 end
 
-function overlay:toggle(newVisible)
+function view:toggle(newVisible)
   if (newVisible == true) or (newVisible == false) then self.isVisible = newVisible
   else self.isVisible = not self.isVisible end
 
@@ -102,8 +102,8 @@ function overlay:toggle(newVisible)
   elseif self.isVisible and (self.onOpen ~= nil) then self.onOpen() end
 end
 
-function overlay:quit()
+function view:quit()
   self:toggle(false)
 end
 
-return overlay
+return view

@@ -1,6 +1,6 @@
 local Suit = require('/lib/suit/')
 
-local screen = {
+local view = {
     isVisible = false,
     onExitSettings = nil
 }
@@ -36,7 +36,7 @@ local function restorePreviousSettings()
     love.audio.setVolume(previousSettings.volume)
 end
 
-function screen:load(ScreenManager)
+function view:load(ScreenManager)
     self.ScreenManager = ScreenManager
     self.isVisible = false
     self.onExitSettings = nil
@@ -46,7 +46,7 @@ function screen:load(ScreenManager)
     slider.value = love.audio.getVolume() * 100
 end
 
-function screen:update()
+function view:update()
     if self.isVisible then
         Suit.layout:reset(centerX, centerY, paddingX, paddingY)
 
@@ -90,4 +90,4 @@ function screen:update()
     end
 end
 
-return screen
+return view

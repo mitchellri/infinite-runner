@@ -1,7 +1,7 @@
 local screen = {}
-local subscreens = {
-  menu = require("screens.subscreens.MainScreenMenu"),
-  settings = require("screens.subscreens.SettingsMenu")
+local views = {
+  menu = require("screens.views.MainMenuView"),
+  settings = require("screens.views.SettingsView")
 }
 
 local sound = {
@@ -13,28 +13,28 @@ local function onExitMainScreen()
 end
 
 local function onSettings()
-  subscreens.settings.isVisible = true
-  subscreens.menu.isVisible = false
+  views.settings.isVisible = true
+  views.menu.isVisible = false
 end
 
 local function onExitSettings()
-  subscreens.settings.isVisible = false
-  subscreens.menu.isVisible = true
+  views.settings.isVisible = false
+  views.menu.isVisible = true
 end
 
 function screen:Load(ScreenManager)
-	subscreens.menu:load(ScreenManager)
-  subscreens.menu.onExitMainScreen = onExitMainScreen
-  subscreens.menu.onSettings = onSettings
-  subscreens.settings:load(ScreenManager)
-  subscreens.settings.onExitSettings = onExitSettings
+	views.menu:load(ScreenManager)
+  views.menu.onExitMainScreen = onExitMainScreen
+  views.menu.onSettings = onSettings
+  views.settings:load(ScreenManager)
+  views.settings.onExitSettings = onExitSettings
   sound.music:setLooping(true)
 	sound.music:play()
 end
 
 function screen:Update( dt )
-	subscreens.menu:update(dt)
-	subscreens.settings:update(dt)
+	views.menu:update(dt)
+	views.settings:update(dt)
 end
 
 function screen:Draw() end

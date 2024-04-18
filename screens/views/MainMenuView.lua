@@ -1,6 +1,6 @@
 local Suit = require('/lib/suit/')
 
-local screen = {
+local view = {
     isVisible = true,
     onExitMainScreen = nil,
     onSettings = nil
@@ -22,14 +22,14 @@ local paddingY = 10
 local centerX = (love.graphics.getWidth() - rWidth - paddingX) / 2
 local centerY = (love.graphics.getHeight() - rHeight - paddingY) / 2
 
-function screen:load(ScreenManager)
+function view:load(ScreenManager)
     self.ScreenManager = ScreenManager
     self.isVisible = true
     self.onExitMainScreen = nil
     self.onSettings = nil
 end
 
-function screen:update()
+function view:update()
     if self.isVisible then
         Suit.layout:reset(centerX, centerY)
         Suit.layout:padding(paddingX, paddingY)
@@ -70,4 +70,4 @@ function screen:update()
     end
 end
 
-return screen
+return view

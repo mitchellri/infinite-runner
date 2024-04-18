@@ -1,6 +1,6 @@
 local Suit = require('/lib/suit/')
 
-local overlay = {
+local view = {
   isVisible = false,
   onQuit = nil
 }
@@ -21,15 +21,15 @@ local paddingY = 10
 local centerX = (love.graphics.getWidth() - rWidth - paddingX) / 2
 local centerY = (love.graphics.getHeight() - rHeight - paddingY) / 2
 
-function overlay:load(ScreenManager)
+function view:load(ScreenManager)
   self.ScreenManager = ScreenManager
   self.isVisible = false
   self.onQuit = nil
 end
 
-function overlay:draw() end
+function view:draw() end
 
-function overlay:update()
+function view:update()
   if self.isVisible then
     Suit.layout:reset(centerX, centerY)
     Suit.layout:padding(paddingX, paddingY)
@@ -61,10 +61,10 @@ function overlay:update()
   end
 end
 
-function overlay:keypressed(key) end
+function view:keypressed(key) end
 
-function overlay:quit()
+function view:quit()
   self.isVisible = false
 end
 
-return overlay
+return view
