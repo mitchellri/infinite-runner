@@ -1,12 +1,12 @@
+local Yonder = require("lib.Yonder.exampleScreen")
+
+local view = setmetatable({
+    isPaused = false,
+	onPlayerDeath = nil
+}, {__index=Yonder})
+
 local background = require("backGround")
 local objects = require("objects")
-
-
-local view = {
-	isPaused = false,
-	onPlayerDeath = nil
-}
-
 local world = nil
 local character = nil
 local floor = nil
@@ -40,13 +40,17 @@ local function postSolve(a, b, col, normalImpulse, tangentImpulse)
 end
 --[[ /Collision ]]
 
+--[[	LOCAL FUNCTIONS	]]
+
 local function onPlayerDeath()
 	if view.onPlayerDeath ~= nil then
 		view:onPlayerDeath()
 	end
 end
 
-function view:load(ScreenManager)
+--[[	MAIN FUNCTIONS	]]
+
+function view:Load(ScreenManager)
 	love.graphics.setBackgroundColor(0,0,0,0)
 	love.keyboard.setKeyRepeat(true)
 
@@ -63,7 +67,7 @@ function view:load(ScreenManager)
 	reward = Objects.Social.new(world, love.graphics.getWidth()-30, floor.body:getY() - 90)
 end
 
-function view:update( dt )
+function view:Update( dt )
 	if not self.isPaused then
 		world:update(dt)
 		character:update(dt)
@@ -74,7 +78,7 @@ function view:update( dt )
 	end
 end
 
-function view:draw()
+function view:Draw()
 	background:draw()
 	floor:draw()
 	rock:draw()
@@ -82,13 +86,14 @@ function view:draw()
 	reward:draw()
 end
 
-function view:pause(newPaused)
-	self.isPaused = newPaused
+function view:KeyPressed( key )
+	character:keypressed( key )
 end
 
+--[[	OBJECT FUNCTIONS	]]
 
-function view:keypressed( key )
-	character:keypressed( key )
+function view:pause(newPaused)
+	self.isPaused = newPaused
 end
 
 

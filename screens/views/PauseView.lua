@@ -1,11 +1,12 @@
 local Suit = require('/lib/suit/')
+local Yonder = require("lib.Yonder.exampleScreen")
 
-local view = {
+local view = setmetatable({
   isVisible = false,
   onClose = nil,
   onQuit = nil,
   onSettings = nil
-}
+}, {__index=Yonder})
 
 local sound = {
   menu = {
@@ -15,16 +16,17 @@ local sound = {
 	}
 }
 
-local labelFont = love.graphics.newFont(24)
-
 local rWidth = 200
 local rHeight = 30
 local paddingX = 0
 local paddingY = 10
 local centerX = (love.graphics.getWidth() - rWidth - paddingX) / 2
 local centerY = (love.graphics.getHeight() - rHeight - paddingY) / 2
+local labelFont = love.graphics.newFont(24)
 
-function view:load(ScreenManager)
+--[[	MAIN FUNCTIONS	]]
+
+function view:Load(ScreenManager)
   self.ScreenManager = ScreenManager
   self.isVisible = false
   self.onClose = nil
@@ -32,9 +34,7 @@ function view:load(ScreenManager)
   self.onSettings = nil
 end
 
-function view:draw() end
-
-function view:update()
+function view:Update()
   if self.isVisible then
     Suit.layout:reset(centerX, centerY)
     Suit.layout:padding(paddingX, paddingY)
@@ -86,13 +86,15 @@ function view:update()
   end
 end
 
-function view:keypressed(key)
+function view:KeyPressed(key)
   if key == "escape" then
     sound.menu.toggle:stop()
     sound.menu.toggle:play()
     self:toggle()
   end
 end
+
+--[[	OBJECT FUNCTIONS	]]
 
 function view:toggle(newVisible)
   if (newVisible == true) or (newVisible == false) then self.isVisible = newVisible

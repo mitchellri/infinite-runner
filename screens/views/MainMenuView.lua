@@ -1,12 +1,11 @@
 local Suit = require('/lib/suit/')
+local Yonder = require("lib.Yonder.exampleScreen")
 
-local view = {
+local view = setmetatable({
     isVisible = true,
     onExitMainScreen = nil,
     onSettings = nil
-}
-
-local labelFont = love.graphics.newFont(24)
+}, {__index=Yonder})
 
 local sound = {
 	menu = {
@@ -21,15 +20,18 @@ local paddingX = 0
 local paddingY = 10
 local centerX = (love.graphics.getWidth() - rWidth - paddingX) / 2
 local centerY = (love.graphics.getHeight() - rHeight - paddingY) / 2
+local labelFont = love.graphics.newFont(24)
 
-function view:load(ScreenManager)
+--[[	MAIN FUNCTIONS	]]
+
+function view:Load(ScreenManager)
     self.ScreenManager = ScreenManager
     self.isVisible = true
     self.onExitMainScreen = nil
     self.onSettings = nil
 end
 
-function view:update()
+function view:Update()
     if self.isVisible then
         Suit.layout:reset(centerX, centerY)
         Suit.layout:padding(paddingX, paddingY)

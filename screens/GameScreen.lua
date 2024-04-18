@@ -1,4 +1,6 @@
-local screen = {}
+local Yonder = require("lib.Yonder.exampleScreen")
+
+local screen = setmetatable({}, {__index=Yonder})
 local views = {
 	game = require("screens.views.GameView"),
 	settings = require("screens.views.SettingsView"),
@@ -9,6 +11,8 @@ local views = {
 local sound = {
 	music = love.audio.newSource("/sound/music/happy.mp3", "stream")
 }
+
+--[[	LOCAL FUNCTIONS	]]
 
 local function onPauseOpen()
 	views.game:pause(true)
@@ -40,43 +44,45 @@ local function onPlayerDeath()
 	views.gameOver.isVisible = true
 end
 
+--[[	MAIN FUNCTIONS	]]
+
 function screen:Load(ScreenManager)
 	self.ScreenManager = ScreenManager
-	views.game:load(ScreenManager)
+	views.game:Load(ScreenManager)
 	views.game.onPlayerDeath = onPlayerDeath
-	views.settings:load(ScreenManager)
+	views.settings:Load(ScreenManager)
 	views.settings.onExitSettings = onExitSettings
-	views.pause:load(ScreenManager)
+	views.pause:Load(ScreenManager)
 	views.pause.onOpen = onPauseOpen
 	views.pause.onClose = onPauseClose
 	views.pause.onQuit = onQuit
 	views.pause.onSettings = onSettings
-	views.gameOver:load(ScreenManager)
+	views.gameOver:Load(ScreenManager)
 	views.gameOver.onQuit = onQuit
-	views.overlay:load()
+	views.overlay:Load()
 	sound.music:play()
 	sound.music:setLooping(true)
 end
 
 function screen:Update( dt )
-	views.game:update(dt)
-	views.settings:update(dt)
-	views.pause:update()
-	views.gameOver:update()
-	views.overlay:update(dt)
+	views.game:Update(dt)
+	views.settings:Update(dt)
+	views.pause:Update()
+	views.gameOver:Update()
+	views.overlay:Update(dt)
 end
 
 function screen:Draw()
-	views.game:draw()
-	views.overlay:draw()
+	views.game:Draw()
+	views.overlay:Draw()
 end
 
 function screen:KeyPressed(key)
 	if (not views.gameOver.isVisible) and (not views.settings.isVisible) then
-		views.pause:keypressed(key)
+		views.pause:KeyPressed(key)
 	end
 	if (not views.pause.isVisible) and (not views.gameOver.isVisible) and (not views.settings.isVisible) then
-		views.game:keypressed(key)
+		views.game:KeyPressed(key)
 	end
 end
 

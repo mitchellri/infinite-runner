@@ -1,4 +1,6 @@
-local screen = {}
+local Yonder = require("lib.Yonder.exampleScreen")
+
+local screen = setmetatable({}, {__index=Yonder})
 local views = {
   menu = require("screens.views.MainMenuView"),
   settings = require("screens.views.SettingsView")
@@ -7,6 +9,8 @@ local views = {
 local sound = {
 	music = love.audio.newSource("/sound/music/intro_theme.mp3", "stream")
 }
+
+--[[	LOCAL FUNCTIONS	]]
 
 local function onExitMainScreen()
   sound.music:stop()
@@ -22,21 +26,21 @@ local function onExitSettings()
   views.menu.isVisible = true
 end
 
+--[[	MAIN FUNCTIONS	]]
+
 function screen:Load(ScreenManager)
-	views.menu:load(ScreenManager)
+	views.menu:Load(ScreenManager)
   views.menu.onExitMainScreen = onExitMainScreen
   views.menu.onSettings = onSettings
-  views.settings:load(ScreenManager)
+  views.settings:Load(ScreenManager)
   views.settings.onExitSettings = onExitSettings
   sound.music:setLooping(true)
 	sound.music:play()
 end
 
-function screen:Update( dt )
-	views.menu:update(dt)
-	views.settings:update(dt)
+function screen:Update(dt)
+	views.menu:Update(dt)
+	views.settings:Update(dt)
 end
-
-function screen:Draw() end
 
 return screen

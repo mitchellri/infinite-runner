@@ -1,11 +1,10 @@
 local Suit = require('/lib/suit/')
+local Yonder = require("lib.Yonder.exampleScreen")
 
-local view = {
+local view = setmetatable({
     isVisible = false,
     onExitSettings = nil
-}
-
-local labelFont = love.graphics.newFont(24)
+}, {__index=Yonder})
 
 local sound = {
 	menu = {
@@ -20,12 +19,15 @@ local paddingX = 5
 local paddingY = 10
 local centerX = (love.graphics.getWidth() - rWidth - paddingX) / 2
 local centerY = (love.graphics.getHeight() - rHeight - paddingY) / 2
+local labelFont = love.graphics.newFont(24)
 
 local slider = {value = 0, min = 0, max = 100}
 
 local previousSettings = {
     volume = 0
 }
+
+--[[	LOCAL FUNCTIONS	]]
 
 local function saveNewSettings()
     previousSettings.volume = love.audio.getVolume()
@@ -36,7 +38,9 @@ local function restorePreviousSettings()
     love.audio.setVolume(previousSettings.volume)
 end
 
-function view:load(ScreenManager)
+--[[	MAIN FUNCTIONS	]]
+
+function view:Load(ScreenManager)
     self.ScreenManager = ScreenManager
     self.isVisible = false
     self.onExitSettings = nil
@@ -46,7 +50,7 @@ function view:load(ScreenManager)
     slider.value = love.audio.getVolume() * 100
 end
 
-function view:update()
+function view:Update()
     if self.isVisible then
         Suit.layout:reset(centerX, centerY, paddingX, paddingY)
 
