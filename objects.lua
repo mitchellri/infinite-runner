@@ -83,6 +83,8 @@ end
 Base.Reward = setmetatable({}, {__index = Base.Circle}) -- Assign a new table, and when an index is not found in Base.Obstacle look in Base.Object
 Base.Reward.image = love.graphics.newImage("images/objects/nuomi.jpg")
 Base.Reward.radius = math.min(Base.Reward.image:getHeight(), Base.Reward.image:getWidth()) / 2 * bodyScale
+Base.Reward.points = 0
+
 function Base.Reward:update(dt)
 	local vx, vy = self.body:getLinearVelocity()
 	self.body:setLinearVelocity(Objects.Speed, vy)
@@ -90,6 +92,10 @@ end
 
 function Base.Reward:draw()
 	love.graphics.draw(self.image, self.body:getX() - self.radius + (self.radius*2 - self.image:getWidth()) / 2, self.body:getY() - self.radius + (self.radius*2 - self.image:getHeight()) / 2, self.body:getAngle())
+end
+
+function Base.Reward:consume()
+	return self.points
 end
 
 
@@ -124,6 +130,8 @@ function Objects.Character.new(world, x, y)
 	o.scale = 5
 	o.radius = math.min(o.animation.current:getWidth() * o.scale, o.animation.current:getHeight() * o.scale) / 2 * bodyScale
 	o.jumpVelocity = 1200/2
+
+	o.score = 0
 	o.body = love.physics.newBody( world, x, y, "dynamic")
 	o.body:setFixedRotation(true)
 	--[[
@@ -140,8 +148,10 @@ function Objects.Character.new(world, x, y)
 		if object.fixture:getBody():getType() == "dynamic" then
 			if object.type == Type.obstacle then
 				self:die()
+			elseif object.type == Type.reward then
+				self.score = self.score + object:consume()
 			end
-		else
+		else -- collision with floor
 			vx, vy = self.body:getLinearVelocity()
 			if (self.animation.current == self.animation.jump) and vy > 0 then
 				self.animation.jump:reset()
@@ -233,6 +243,7 @@ end
 
 function Objects.Social.new(world,x,y)
 	local o = setmetatable({},{__index = Base.Reward})
+	o.points = 300
 	o.body = love.physics.newBody(world,x,y,"dynamic")
 	o.body:setFixedRotation( true)
 	local shape = love.physics.newCircleShape( 0, 0, o.radius )

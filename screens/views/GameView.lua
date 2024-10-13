@@ -59,12 +59,12 @@ function view:Load(ScreenManager)
 
 	world = love.physics.newWorld( 0, 9.8*4 * love.physics.getMeter(), false )
 	world:setCallbacks(beginContact, endContact, preSolve, postSolve)
-	character = objects.Character.new(world, love.graphics.getWidth()/2, love.graphics.getHeight()/2)
+	character = objects.Character.new(world, love.graphics.getWidth()*.1, love.graphics.getHeight()/2)
 	character.onDeath = onPlayerDeath
 	floor = objects.Floor.new(world, 0, love.graphics.getHeight()-50/2, love.graphics.getWidth(), 50)
-	rock = objects.Rock.new(world, love.graphics.getWidth() - 75, floor.body:getY() - 61)
+	rock = objects.Rock.new(world, love.graphics.getWidth()*.9, floor.body:getY() - 61)
 	background:load()
-	reward = Objects.Social.new(world, love.graphics.getWidth()-30, floor.body:getY() - 90)
+	reward = Objects.Social.new(world, love.graphics.getWidth()*.70, floor.body:getY() - 90)
 end
 
 function view:Update( dt )
