@@ -25,13 +25,13 @@ function view:Update(dt)
   if self.isActive then
     self.time = self.time + dt
   end
-
-  if self.isActive then
-    self.score = self.score + self.time/2*math.exp(0.005)
-  end
 end
 
 --[[	OBJECT FUNCTIONS	]]
+
+function view:onScoreChanged(score)
+  self.score = score
+end
 
 function view:toggle(newVisible)
   if (newVisible == true) or (newVisible == false) then self.isVisible = newVisible

@@ -2,7 +2,8 @@ local Yonder = require("lib.Yonder.exampleScreen")
 
 local view = setmetatable({
     isPaused = false,
-	onPlayerDeath = nil
+	onPlayerDeath = nil,
+	onScoreChanged = nil
 }, {__index=Yonder})
 
 local background = require("backGround")
@@ -48,6 +49,11 @@ local function onPlayerDeath()
 	end
 end
 
+local function onScoreChanged(score)
+	if view.onScoreChanged~=nil then
+		view.onScoreChanged(score)
+	end
+end
 --[[	MAIN FUNCTIONS	]]
 
 function view:Load(ScreenManager)
@@ -56,11 +62,13 @@ function view:Load(ScreenManager)
 
 	self.isPaused = false
 	self.onPlayerDeath = nil
+	self.onScoreChanged = nil
 
 	world = love.physics.newWorld( 0, 9.8*4 * love.physics.getMeter(), false )
 	world:setCallbacks(beginContact, endContact, preSolve, postSolve)
 	character = objects.Character.new(world, love.graphics.getWidth()*.1, love.graphics.getHeight()/2)
 	character.onDeath = onPlayerDeath
+	character.onScoreChanged = onScoreChanged
 	floor = objects.Floor.new(world, 0, love.graphics.getHeight()-50/2, love.graphics.getWidth(), 50)
 	rock = objects.Rock.new(world, love.graphics.getWidth()*.9, floor.body:getY() - 61)
 	background:load()

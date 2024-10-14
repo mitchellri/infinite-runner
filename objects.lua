@@ -143,13 +143,14 @@ function Objects.Character.new(world, x, y)
 	o.fixture:setUserData(o) -- Set the data that gets passed when a collision is detected (Required for collision detection)
 
 	o.onDeath = nil
+	o.onScoreChanged = nil
 
 	function o:preSolve(object, col)
 		if object.fixture:getBody():getType() == "dynamic" then
 			if object.type == Type.obstacle then
 				self:die()
 			elseif object.type == Type.reward then
-				self.score = self.score + object:consume()
+				self:changeScore(self.score + object:consume())
 			end
 		else -- collision with floor
 			vx, vy = self.body:getLinearVelocity()
@@ -173,6 +174,13 @@ function Objects.Character.new(world, x, y)
 		end
 	end
 
+	function o:changeScore(score)
+		self.score = score
+		if (self.onScoreChanged ~= nil) then
+			self.onScoreChanged(score)
+		end
+	end
+
 	function o:jump( )
 		self.body:setLinearVelocity( 0, -o.jumpVelocity )
 		self.animation.walk:stop()
@@ -190,6 +198,7 @@ function Objects.Character.new(world, x, y)
 
 	function o:update(dt)
 		self.animation.current:update(dt)
+		self:changeScore(self.score + dt/2*math.exp(0.0005))
 	end
 
 	function o:draw()

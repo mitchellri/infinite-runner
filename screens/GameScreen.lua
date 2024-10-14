@@ -33,12 +33,16 @@ local function onPlayerDeath()
 	views.gameOver.isVisible = true
 end
 
+local function onScoreChanged(score)
+	views.overlay:onScoreChanged(score)
+end
 --[[	MAIN FUNCTIONS	]]
 
 function screen:Load(ScreenManager)
 	self.ScreenManager = ScreenManager
 	views.game:Load(ScreenManager)
 	views.game.onPlayerDeath = onPlayerDeath
+	views.game.onScoreChanged = onScoreChanged
 	views.pause:Load(ScreenManager)
 	views.pause.onOpen = onPauseOpen
 	views.pause.onClose = onPauseClose
