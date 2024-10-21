@@ -1,3 +1,5 @@
+require('/lib/AnAL')
+
 love.graphics.setDefaultFilter("nearest","nearest")
 love.audio.setVolume(0.1)
 

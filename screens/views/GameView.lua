@@ -6,7 +6,7 @@ local view = setmetatable({
 }, {__index=Yonder})
 
 local background = require("backGround")
-local objects = require("objects")
+local objects = require("objects/objects")
 local world = nil
 local character = nil
 local floor = nil
