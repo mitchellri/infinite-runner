@@ -1,14 +1,17 @@
-local circle = require("objects/base/circle")
 local constants = require("constants")
+local circle = require("objects/base/circle")
 
 local obstacle = setmetatable({}, {__index = circle}) -- Assign a new table, and when an index is not found in obstacle look in Base.Object
 obstacle.image = love.graphics.newImage("images/objects/rock.png")
 obstacle.radius = math.min(obstacle.image:getHeight(), obstacle.image:getWidth()) / 2 * constants.objects.bodyScale
 obstacle.color = {0, 1, 0}
+obstacle.type = constants.objects.type.obstacle
+
 function obstacle:update(dt)
 	local vx, vy = self.body:getLinearVelocity()
 	self.body:setLinearVelocity(Objects.Speed, vy)
 end
+
 function obstacle:draw()
 	-- Body origin is the center of the circle, animation origin is the top left of the animation
 	-- Subtract radius to align with top left of the body as if it were a rectangle

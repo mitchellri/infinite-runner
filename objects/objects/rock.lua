@@ -1,4 +1,3 @@
-local constants = require("constants")
 local obstacle = require("objects/base/obstacle")
 
 local rock = {}
@@ -15,8 +14,6 @@ function rock.new(world, x, y)
 	local shape = love.physics.newCircleShape( 0, 0, o.radius )
 	o.fixture = love.physics.newFixture( o.body, shape, 1 ) -- Shape is copied not referenced
 	o.fixture:setUserData(o) -- Set the data that gets passed when a collision is detected (Required for collision detection)
-
-	o.type = constants.objects.type.obstacle
 	
 	return o
 end

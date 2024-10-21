@@ -1,6 +1,8 @@
 local object = require("objects/base/object")
 
 local rectangle = setmetatable({}, {__index = object}) -- Assign a new table, and when an index is not found in Base.Rectangle look in Base.Object
+rectangle.color = {0, 1, 0}
+
 function rectangle:draw()
 	love.graphics.setColor(self.color)
 	-- Move the coordinate system origin (0, 0) to the location of the physical body

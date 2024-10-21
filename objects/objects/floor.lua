@@ -6,7 +6,6 @@ function floor.new(world, x, y, width, height)
 	local o = setmetatable({}, {__index = rectangle}) -- Create a new object - When an index isn't found in the object, look at Base.Rectangle
 	o.width = width
 	o.height = height
-	o.color = {0, 1, 0}
 
 	o.body = love.physics.newBody( world, x, y, "static")
 	--[[
