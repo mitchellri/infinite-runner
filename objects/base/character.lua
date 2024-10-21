@@ -30,15 +30,14 @@ function character:preSolve(object, col)
     else
         vx, vy = self.body:getLinearVelocity()
         if (self.animation.current == self.animation.jump) and vy > 0 then
-            self.animation.jump:reset()
             self.animation.jump:stop()
-            self.animation.land:play()
             self.animation.current = self.animation.land
-        elseif (self.animation.current == self.animation.land) and not self.animation.current.playing then
             self.animation.land:reset()
+            self.animation.land:play()
+        elseif (self.animation.current == self.animation.land) and not self.animation.current.playing then
             self.animation.land:stop()
-            self.animation.walk:play()
             self.animation.current = self.animation.walk
+            self.animation.walk:play()
         end
     end
 end
@@ -51,9 +50,10 @@ end
 
 function character:jump( )
     self.body:setLinearVelocity( 0, -character.jumpVelocity )
-    self.animation.walk:stop()
-    self.animation.jump:play()
+    self.animation.current:stop()
     self.animation.current = self.animation.jump
+    self.animation.jump:reset()
+    self.animation.jump:play()
     self.sound.jump:stop()
     self.sound.jump:play()
 end
